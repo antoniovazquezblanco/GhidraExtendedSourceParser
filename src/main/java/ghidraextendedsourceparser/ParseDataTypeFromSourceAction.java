@@ -25,21 +25,20 @@ import docking.widgets.tree.GTreeNode;
 import ghidra.app.plugin.core.datamgr.DataTypesActionContext;
 import ghidra.app.plugin.core.datamgr.tree.CategoryNode;
 import ghidra.app.plugin.core.datamgr.tree.DataTypeNode;
-import ghidra.framework.plugintool.PluginTool;
 import ghidra.program.model.data.Category;
 import ghidra.program.model.listing.Program;
 import ghidra.util.Msg;
 
 public class ParseDataTypeFromSourceAction extends DockingAction {
 
-	private PluginTool tool;
+	private GhidraExtendedSourceParserPlugin plugin;
 	private ParseDataTypeFromSourceDialog parseDialog;
 
 	public ParseDataTypeFromSourceAction(GhidraExtendedSourceParserPlugin plugin) {
 		super("Parse Data Types From Source", plugin.getName());
-		this.tool = plugin.getTool();
+		this.plugin = plugin;
 		parseDialog = new ParseDataTypeFromSourceDialog();
-		setPopupMenuData(new MenuData(new String[] { "Parse type from srouce..." }, null, "VeryLast"));
+		setPopupMenuData(new MenuData(new String[] { "Parse type from C source..." }, null, "VeryLast"));
 		setEnabled(true);
 	}
 
@@ -48,7 +47,6 @@ public class ParseDataTypeFromSourceAction extends DockingAction {
 		if (!(context instanceof DataTypesActionContext)) {
 			return false;
 		}
-
 		GTree gTree = (GTree) context.getContextObject();
 		TreePath[] selectionPaths = gTree.getSelectionPaths();
 		// We can only parse into a single node. If multiple nodes are selected, disable
@@ -105,7 +103,8 @@ public class ParseDataTypeFromSourceAction extends DockingAction {
 	 */
 	private void parseFromSource(Category category) {
 		parseDialog.clearSource();
+		parseDialog.setDataManager(plugin.getCurrentProgram().getDataTypeManager());
 		parseDialog.setCategory(category);
-		tool.showDialog(parseDialog);
+		plugin.getTool().showDialog(parseDialog);
 	}
 }

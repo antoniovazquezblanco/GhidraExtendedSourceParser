@@ -17,6 +17,7 @@ package ghidraextendedsourceparser;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,10 +27,19 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import docking.ReusableDialogComponentProvider;
+import ghidra.app.util.cparser.C.CParser;
+import ghidra.app.util.cparser.C.ParseException;
 import ghidra.program.model.data.Category;
+import ghidra.program.model.data.DataType;
+import ghidra.program.model.data.DataTypeManager;
+import ghidra.program.model.data.ProgramBasedDataTypeManager;
+import ghidra.util.Msg;
+import ghidra.util.exception.DuplicateNameException;
 
 public class ParseDataTypeFromSourceDialog extends ReusableDialogComponentProvider {
 
+	private DataTypeManager dataTypeManager;
+	private Category category;
 	private JTextField targetLabel;
 	private JTextArea sourceTextArea;
 
@@ -69,11 +79,54 @@ public class ParseDataTypeFromSourceDialog extends ReusableDialogComponentProvid
 	}
 
 	public void setCategory(Category category) {
+		this.category = category;
 		targetLabel.setText(category.getCategoryPathName());
 	}
 
-	private void doParse() {
-		// TODO
+	public void setDataManager(ProgramBasedDataTypeManager dataTypeManager) {
+		this.dataTypeManager = dataTypeManager;
 	}
 
+	private void doParse() {
+		CParser cParser = new CParser(dataTypeManager, true, null);
+		try {
+			cParser.parse(sourceTextArea.getText());
+		} catch (ParseException e) {
+			Msg.showError(this, this.getComponent(), "Error", e.getMessage());
+		}
+		Map<String, DataType> declarations = cParser.getDeclarations();
+		for (DataType dt : declarations.values())
+			moveDataTypeToCategory(dt);
+
+		Map<String, DataType> enums = cParser.getEnums();
+		for (DataType dt : enums.values())
+			moveDataTypeToCategory(dt);
+
+		Map<String, DataType> funcs = cParser.getFunctions();
+		for (DataType dt : funcs.values())
+			moveDataTypeToCategory(dt);
+
+		Map<String, DataType> composites = cParser.getComposites();
+		for (DataType dt : composites.values())
+			moveDataTypeToCategory(dt);
+
+		Map<String, DataType> types = cParser.getTypes();
+		for (DataType dt : types.values())
+			moveDataTypeToCategory(dt);
+
+		if (cParser.didParseSucceed())
+			this.dispose();
+	}
+
+	private void moveDataTypeToCategory(DataType dt) {
+		int t = dataTypeManager.startTransaction("DataType set category path");
+		try {
+			dt.setCategoryPath(category.getCategoryPath());
+		} catch (DuplicateNameException e) {
+			dataTypeManager.remove(dt, getTaskMonitorComponent());
+			Msg.showError(this, this.getComponent(), "Error",
+					dt.getName() + " conflicts with an existing data type. It will not be created!");
+		}
+		dataTypeManager.endTransaction(t, true);
+	}
 }
