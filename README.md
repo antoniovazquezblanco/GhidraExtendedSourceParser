@@ -18,7 +18,9 @@ In Ghidra main window go to `File` > `Install extensions...`. In the new window 
 
 ## Using
 
-TODO
+There will be a new right click option in the data type manager window to parse data types from C. You can then paste an small snippet of code that will be parsed into types.
+
+![Usage example animation](doc/usage.gif)
 
 
 ## Develop
