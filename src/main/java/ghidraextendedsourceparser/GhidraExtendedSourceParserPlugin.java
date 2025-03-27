@@ -32,7 +32,7 @@ import ghidra.framework.plugintool.util.PluginStatus;
 	packageName = CorePluginPackage.NAME,
 	category = PluginCategoryNames.COMMON,
 	shortDescription = "Parse source code snippets into data types.",
-	description = "This plugin adds a some user friendly way to parse samll source code snippets into data types."
+	description = "This plugin adds a some user friendly way to parse small source code snippets into data types."
 )
 //@formatter:on
 public class GhidraExtendedSourceParserPlugin extends ProgramPlugin {
