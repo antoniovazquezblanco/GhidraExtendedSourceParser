@@ -32,7 +32,6 @@ import ghidra.app.util.cparser.C.ParseException;
 import ghidra.program.model.data.Category;
 import ghidra.program.model.data.DataType;
 import ghidra.program.model.data.DataTypeManager;
-import ghidra.program.model.data.ProgramBasedDataTypeManager;
 import ghidra.util.Msg;
 import ghidra.util.exception.DuplicateNameException;
 
@@ -83,7 +82,7 @@ public class ParseDataTypeFromSourceDialog extends ReusableDialogComponentProvid
 		targetLabel.setText(category.getCategoryPathName());
 	}
 
-	public void setDataManager(ProgramBasedDataTypeManager dataTypeManager) {
+	public void setDataManager(DataTypeManager dataTypeManager) {
 		this.dataTypeManager = dataTypeManager;
 	}
 

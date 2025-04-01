@@ -23,9 +23,13 @@ import docking.action.MenuData;
 import docking.widgets.tree.GTree;
 import docking.widgets.tree.GTreeNode;
 import ghidra.app.plugin.core.datamgr.DataTypesActionContext;
+import ghidra.app.plugin.core.datamgr.archive.Archive;
+import ghidra.app.plugin.core.datamgr.tree.ArchiveNode;
 import ghidra.app.plugin.core.datamgr.tree.CategoryNode;
 import ghidra.app.plugin.core.datamgr.tree.DataTypeNode;
+import ghidra.app.plugin.core.datamgr.tree.DataTypeTreeNode;
 import ghidra.program.model.data.Category;
+import ghidra.program.model.data.DataTypeManager;
 import ghidra.program.model.listing.Program;
 import ghidra.util.Msg;
 
@@ -72,13 +76,14 @@ public class ParseDataTypeFromSourceAction extends DockingAction {
 		GTree gTree = (GTree) dtActionContext.getContextObject();
 		Program program = dtActionContext.getProgram();
 		if (program == null) {
-			Msg.showError(this, gTree, "Archive Export Failed",
-					"A suitable program must be open and activated before\n" + "an archive export may be performed.");
+			Msg.showError(this, gTree, "Source parse to Archive failed",
+					"A suitable program must be open and activated before source can be parsed into an archive.");
 			return;
 		}
 		TreePath[] selectionPaths = gTree.getSelectionPaths();
 		Category category = getCategoryFromTreePath(selectionPaths[0]);
-		parseFromSource(category);
+		DataTypeManager dataMgr = getDataTypeManagerFromTreePath(selectionPaths[0]);
+		parseFromSource(dataMgr, category);
 	}
 
 	/**
@@ -97,13 +102,20 @@ public class ParseDataTypeFromSourceAction extends DockingAction {
 		return null;
 	}
 
+	private DataTypeManager getDataTypeManagerFromTreePath(TreePath path) {
+		DataTypeTreeNode last = (DataTypeTreeNode) path.getLastPathComponent();
+		ArchiveNode archiveNode = last.getArchiveNode();
+		Archive archive = archiveNode.getArchive();
+		return archive.getDataTypeManager();
+	}
+
 	/**
 	 * Asks the user to input some source code. Attempts to parse set source code
 	 * into valid data types. Writes those data types into the provided category.
 	 */
-	private void parseFromSource(Category category) {
+	private void parseFromSource(DataTypeManager dataMgr, Category category) {
 		parseDialog.clearSource();
-		parseDialog.setDataManager(plugin.getCurrentProgram().getDataTypeManager());
+		parseDialog.setDataManager(dataMgr);
 		parseDialog.setCategory(category);
 		plugin.getTool().showDialog(parseDialog);
 	}
