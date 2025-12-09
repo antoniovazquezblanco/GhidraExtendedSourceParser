@@ -1,6 +1,7 @@
 # Ghidra Extended Parser
 
 [![Build](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/main.yml/badge.svg)](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/main.yml)
+[![CodeQL](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/codeql.yml/badge.svg)](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/codeql.yml)
 
 <p align="center">
   <img width="400" src="doc/logo.png" alt="A red dragon reads some source code">
@@ -11,9 +12,9 @@ This is a Ghidra extension that provides some user friendly ways to parse small 
 
 ## Installing
 
-Go to the [releases page](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/releases) and download the latest version for your Ghidra distribution.
+This extension is available for installation via the [Ghidra Extension Manager](https://github.com/antoniovazquezblanco/GhidraExtensionManager).
 
-In Ghidra main window go to `File` > `Install extensions...`. In the new window press the `+` icon to import the downloaded zip.
+You may also install this extension by going to the [releases page](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/releases) and downloading the latest version for your Ghidra distribution. In order to install from the release, in Ghidra main window go to `File` > `Install extensions...`. In the new window press the `+` icon to import the downloaded zip.
 
 
 ## Using
