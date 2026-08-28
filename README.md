@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/main.yml/badge.svg)](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/main.yml)
 [![CodeQL](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/codeql.yml/badge.svg)](https://github.com/antoniovazquezblanco/GhidraExtendedSourceParser/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/antoniovazquezblanco/GhidraExtendedSourceParser/badge)](https://scorecard.dev/viewer/?uri=github.com/antoniovazquezblanco/GhidraExtendedSourceParser)
 
 <p align="center">
   <img width="400" src="doc/logo.png" alt="A red dragon reads some source code">
