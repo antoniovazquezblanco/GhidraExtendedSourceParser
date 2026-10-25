@@ -122,7 +122,7 @@ public class ParseDataTypeFromSourceDialog extends ReusableDialogComponentProvid
 		try {
 			dt.setCategoryPath(category.getCategoryPath());
 		} catch (DuplicateNameException e) {
-			dataTypeManager.remove(dt, getTaskMonitorComponent());
+			dataTypeManager.getCategory(dt.getCategoryPath()).remove(dt, getTaskMonitorComponent());
 			Msg.showError(this, this.getComponent(), "Error",
 					dt.getName() + " conflicts with an existing data type. It will not be created!");
 		}
